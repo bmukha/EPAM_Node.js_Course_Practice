@@ -1,6 +1,6 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 
-const healthCheckRouter = Router();
+const healthCheckRouter: Router = Router();
 
 /**
  * @swagger
@@ -30,6 +30,8 @@ const healthCheckRouter = Router();
  *       - Health Check
  */
 
-healthCheckRouter.get('/', (req, res) => res.json({ isRunning: true }));
+healthCheckRouter.get('/', (req: Request, res: Response) =>
+  res.json({ isRunning: true })
+);
 
 export default healthCheckRouter;
