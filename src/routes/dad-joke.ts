@@ -27,6 +27,7 @@ const dadJokeRouter = Router();
 
 dadJokeRouter.get('/', async (req, res) => {
   try {
+    // @ts-ignore
     const response = await fetch('https://icanhazdadjoke.com/', {
       headers: {
         Accept: 'application/json',

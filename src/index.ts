@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 
@@ -37,6 +37,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use((req, res, next) => res.status(404).send('404 Not Found'));
 
-app.use((err, req, res, next) => res.status(500).send('Internal Server Error'));
+app.use((err: Error, req: Request, res: Response, next: NextFunction) =>
+  res.status(500).send('Internal Server Error')
+);
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
