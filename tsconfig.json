@@ -9,6 +9,8 @@
     "outDir": "./dist",
     "strict": true,
     "baseUrl": "./",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "paths": {
       "@controllers": ["src/controllers/index.js"],
       "@router": ["src/router/index.js"],
@@ -16,12 +18,8 @@
       "@prisma": ["src/config/PrismaClient.js"]
     }
   },
-  // "include": ["src/**/*"],
-
-  // ts-node settings we added
   "ts-node": {
     "esm": true,
     "compiler": "typescript"
   }
-  // *****************
 }

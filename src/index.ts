@@ -2,8 +2,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc, { Options } from 'swagger-jsdoc';
 
-import healthCheckRouter from './routes/health-check.js';
-import dadJokeRouter from './routes/dad-joke.js';
+import healthCheckRouter from './routes/health-check.ts';
+import dadJokeRouter from './routes/dad-joke.ts';
 
 const swaggerOptions: Options = {
   definition: {
