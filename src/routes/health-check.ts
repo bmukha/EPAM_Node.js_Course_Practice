@@ -1,5 +1,7 @@
 import { Request, Response, Router } from 'express';
 
+import * as healthCheckController from '../controllers/healthCheckController.ts';
+
 const healthCheckRouter: Router = Router();
 
 /**
@@ -30,8 +32,6 @@ const healthCheckRouter: Router = Router();
  *       - Health Check
  */
 
-healthCheckRouter.get('/', (req: Request, res: Response) =>
-  res.json({ isRunning: true })
-);
+healthCheckRouter.get('/', healthCheckController.getHealthCheck);
 
 export default healthCheckRouter;
