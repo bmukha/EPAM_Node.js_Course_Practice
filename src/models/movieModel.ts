@@ -7,4 +7,4 @@ const MovieSchema = new mongoose.Schema({
   genres: { type: [mongoose.Schema.Types.ObjectId], ref: 'Genre' },
 });
 
-export const GenreModel = mongoose.model('Movie', MovieSchema);
+export const MovieModel = mongoose.model('Movie', MovieSchema);
