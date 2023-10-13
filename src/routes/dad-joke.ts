@@ -1,6 +1,6 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 
-const dadJokeRouter = Router();
+const dadJokeRouter: Router = Router();
 
 /**
  * @swagger
@@ -25,18 +25,21 @@ const dadJokeRouter = Router();
  *               example: Joke load failed
  */
 
-dadJokeRouter.get('/', async (req, res) => {
+dadJokeRouter.get('/', async (req: Request, res: Response) => {
   try {
-    const response = await fetch('https://icanhazdadjoke.com/', {
-      headers: {
-        Accept: 'application/json',
-      },
-    });
+    const response: globalThis.Response = await fetch(
+      'https://icanhazdadjoke.com/',
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      }
+    );
 
     const { joke } = await response.json();
 
     res.send(joke);
-  } catch (error) {
+  } catch (error: unknown) {
     res.status(500).send('Joke load failed');
   }
 });
