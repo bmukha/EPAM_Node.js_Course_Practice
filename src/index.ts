@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc, { Options } from 'swagger-jsdoc';
+import mongoose from 'mongoose';
 
 import healthCheckRouter from './routes/health-check.ts';
 import dadJokeRouter from './routes/dad-joke.ts';
@@ -42,5 +43,14 @@ app.use((req: Request, res: Response, next: NextFunction) =>
 app.use((err: Error, req: Request, res: Response, next: NextFunction) =>
   res.status(500).send('Internal Server Error')
 );
+
+const DB_URL = `mongodb+srv://user:CEUoCWpUQVgHrtWp@cluster0.73zeuje.mongodb.net/?retryWrites=true&w=majority`;
+
+try {
+  await mongoose.connect(DB_URL);
+  console.log('DB connection successful!');
+} catch (error) {
+  console.error('DB connection failed!');
+}
 
 app.listen(PORT, (): void => console.log(`Server listening on port ${PORT}`));
