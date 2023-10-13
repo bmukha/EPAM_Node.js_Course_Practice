@@ -1,4 +1,6 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
+
+import * as dadJokeController from '../controllers/dadJokeController.ts';
 
 const dadJokeRouter: Router = Router();
 
@@ -25,23 +27,6 @@ const dadJokeRouter: Router = Router();
  *               example: Joke load failed
  */
 
-dadJokeRouter.get('/', async (req: Request, res: Response) => {
-  try {
-    const response: globalThis.Response = await fetch(
-      'https://icanhazdadjoke.com/',
-      {
-        headers: {
-          Accept: 'application/json',
-        },
-      }
-    );
-
-    const { joke } = await response.json();
-
-    res.send(joke);
-  } catch (error: unknown) {
-    res.status(500).send('Joke load failed');
-  }
-});
+dadJokeRouter.get('/', dadJokeController.getDadJoke);
 
 export default dadJokeRouter;
