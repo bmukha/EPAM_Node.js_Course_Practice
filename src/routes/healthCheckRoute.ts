@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 
-import * as healthCheckController from '../controllers/healthCheckController.ts';
+import * as healthCheckController from '../controllers/healthCheckController.js';
 
 const healthCheckRouter: Router = Router();
 

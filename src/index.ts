@@ -3,8 +3,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc, { Options } from 'swagger-jsdoc';
 import mongoose from 'mongoose';
 
-import healthCheckRouter from './routes/health-check.ts';
-import dadJokeRouter from './routes/dad-joke.ts';
+import healthCheckRouter from './routes/healthCheckRoute.ts';
+import dadJokeRouter from './routes/dadJokeRoute.ts';
 
 const swaggerOptions: Options = {
   definition: {
