@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 
 import healthCheckRouter from './routes/healthCheckRoute.ts';
 import dadJokeRouter from './routes/dadJokeRoute.ts';
+import genresRouter from './routes/genresRoute.ts';
 
 const swaggerOptions: Options = {
   definition: {
@@ -28,11 +29,15 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 const app = express();
 const PORT = 3000;
 
+app.use(express.json());
+
 app.get('/', (req: Request, res: Response) => res.send('Hello, World!'));
 
 app.use('/health-check', healthCheckRouter);
 
 app.use('/dad-joke', dadJokeRouter);
+
+app.use('/genres', genresRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
@@ -44,7 +49,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) =>
   res.status(500).send('Internal Server Error')
 );
 
-const DB_URL = `mongodb+srv://user:CEUoCWpUQVgHrtWp@cluster0.73zeuje.mongodb.net/?retryWrites=true&w=majority`;
+const DB_URL = `mongodb+srv://user:CEUoCWpUQVgHrtWp@cluster0.73zeuje.mongodb.net/EPAM_NodeJS_DB?retryWrites=true&w=majority`;
 
 try {
   await mongoose.connect(DB_URL);
