@@ -33,15 +33,15 @@ const PORT = 3000;
 
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => res.send('Hello, World!'));
+app.get('/', (req: Request, res: Response) => res.send('Welcome to API!'));
 
-app.use('/health-check', healthCheckRouter);
+app.use('/api/v1/health-check', healthCheckRouter);
 
-app.use('/dad-joke', dadJokeRouter);
+app.use('/api/v1/dad-joke', dadJokeRouter);
 
-app.use('/genres', genresRouter);
+app.use('/api/v1/genres', genresRouter);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use((req: Request, res: Response, next: NextFunction) =>
   res.status(404).send('404 Not Found')
