@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import { Schema, model, InferSchemaType } from 'mongoose';
 
-const GenreSchema = new mongoose.Schema({
+const GenreSchema = new Schema({
   name: {
     type: String,
     required: [true, 'Name is required!'],
@@ -8,4 +8,6 @@ const GenreSchema = new mongoose.Schema({
   },
 });
 
-export const GenreModel = mongoose.model('Genre', GenreSchema);
+export type Genre = InferSchemaType<typeof GenreSchema>;
+
+export const GenreModel = model('Genre', GenreSchema);
