@@ -7,12 +7,12 @@ const genresRouter: Router = Router();
 genresRouter
   .route('/')
   .get(genresController.getAllGenres)
-  .post(genresController.createGenre)
-  .delete(genresController.deleteGenre);
+  .post(genresController.createGenre);
 
 genresRouter
   .route('/:id')
-  .get(genresController.getGenreById)
-  .put(genresController.updateGenre);
+  .get(genresController.getGenre)
+  .patch(genresController.updateGenre)
+  .delete(genresController.deleteGenre);
 
 export default genresRouter;
