@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const GenreSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Name is required field!'],
-    unique: [true, 'Movie name must be unique!'],
+    required: [true, 'Name is required!'],
+    unique: [true, 'Name must be unique!'],
   },
 });
 
