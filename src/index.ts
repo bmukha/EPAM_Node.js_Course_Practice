@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express, { NextFunction, Request, Response } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc, { Options } from 'swagger-jsdoc';
@@ -49,13 +51,13 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) =>
   res.status(500).send('Internal Server Error')
 );
 
-const DB_URL = `mongodb+srv://user:CEUoCWpUQVgHrtWp@cluster0.73zeuje.mongodb.net/EPAM_NodeJS_DB?retryWrites=true&w=majority`;
-
 try {
-  await mongoose.connect(DB_URL);
+  await mongoose.connect(process.env.DB_URL as string);
   console.log('DB connection successful!');
 } catch (error) {
   console.error('DB connection failed!');
 }
 
-app.listen(PORT, (): void => console.log(`Server listening on port ${PORT}`));
+app.listen(process.env.PORT || 3000, (): void =>
+  console.log(`Server listening on port ${PORT}`)
+);
