@@ -59,5 +59,7 @@ try {
 }
 
 app.listen(process.env.PORT || 3000, (): void =>
-  console.log(`Server listening on port ${PORT}`)
+  console.log(
+    `Server listening on port ${PORT} in ${process.env.NODE_ENV} mode`
+  )
 );
