@@ -59,7 +59,9 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 app.use(globalErrorHandler);
 
 try {
-  await mongoose.connect(process.env.DB_URL as string);
+  await mongoose.connect(process.env.DB_URL as string, {
+    autoIndex: true,
+  });
   console.log('DB connection successful!');
 } catch (error) {
   console.error('DB connection failed!');

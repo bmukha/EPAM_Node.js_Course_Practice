@@ -1,7 +1,11 @@
 import { Schema, model, InferSchemaType } from 'mongoose';
 
 const MovieSchema = new Schema({
-  title: { type: String, required: [true, 'Title is required!'] },
+  title: {
+    type: String,
+    required: [true, 'Title is required!'],
+    unique: [true, 'Title must be unique!'],
+  },
   description: { type: String, required: [true, 'Description is required!'] },
   release_date: { type: Date, required: [true, 'Date is required!'] },
   genres: {
