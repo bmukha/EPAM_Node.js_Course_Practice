@@ -15,4 +15,6 @@ moviesRouter
   .patch(moviesController.updateMovie)
   .delete(moviesController.deleteMovie);
 
+moviesRouter.route('/genre/:genreName').get(moviesController.getMoviesByGenre);
+
 export default moviesRouter;

@@ -8,9 +8,9 @@ const MovieSchema = new Schema({
   },
   description: { type: String, required: [true, 'Description is required!'] },
   release_date: { type: Date, required: [true, 'Date is required!'] },
-  genres: {
+  genre: {
     type: [Schema.Types.ObjectId],
-    ref: 'Genre',
+    ref: 'GenreModel',
     required: [true, 'Genres are required!'],
   },
 });
