@@ -1,15 +1,12 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 
 export const getDadJoke = async (req: Request, res: Response) => {
   try {
-    const response: globalThis.Response = await fetch(
-      'https://icanhazdadjoke.com/',
-      {
-        headers: {
-          Accept: 'application/json',
-        },
-      }
-    );
+    const response: globalThis.Response = await fetch('https://icanhazdadjoke.com/', {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
 
     const { joke } = await response.json();
 

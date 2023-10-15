@@ -1,7 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 
-export const asyncErrorHandler = (func: Function) => {
+export const asyncErrorHandler = (
+  handlerFunc: (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => Promise<void>,
+) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    func(req, res, next).catch((err: Error) => next(err));
+    handlerFunc(req, res, next).catch((err: Error) => next(err));
   };
 };

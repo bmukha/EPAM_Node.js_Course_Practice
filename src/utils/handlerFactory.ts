@@ -4,19 +4,17 @@ import { asyncErrorHandler } from './asyncErrorHandler.ts';
 import { CustomError } from './CustomError.ts';
 
 export const getAll = <T>(Model: Model<T>) => {
-  return asyncErrorHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const data = await Model.find();
-      const collectionName = `${Model.modelName.toLowerCase()}s`;
-      res.status(200).json({
-        status: 'success',
-        length: data.length,
-        data: {
-          [collectionName]: data,
-        },
-      });
-    }
-  );
+  return asyncErrorHandler(async (req: Request, res: Response) => {
+    const data = await Model.find();
+    const collectionName = `${Model.modelName.toLowerCase()}s`;
+    res.status(200).json({
+      status: 'success',
+      length: data.length,
+      data: {
+        [collectionName]: data,
+      },
+    });
+  });
 };
 
 export const getOneById = <T>(Model: Model<T>) => {
@@ -28,7 +26,7 @@ export const getOneById = <T>(Model: Model<T>) => {
       if (!document) {
         const error = new CustomError(
           `${Model.modelName} with id ${id} is not found!`,
-          404
+          404,
         );
         return next(error);
       }
@@ -39,23 +37,21 @@ export const getOneById = <T>(Model: Model<T>) => {
           [Model.modelName.toLocaleLowerCase()]: document,
         },
       });
-    }
+    },
   );
 };
 
 export const createOne = <T>(Model: Model<T>) => {
-  return asyncErrorHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const document = await Model.create(req.body);
+  return asyncErrorHandler(async (req: Request, res: Response) => {
+    const document = await Model.create(req.body);
 
-      res.status(201).json({
-        status: 'success',
-        data: {
-          [Model.modelName.toLocaleLowerCase()]: document,
-        },
-      });
-    }
-  );
+    res.status(201).json({
+      status: 'success',
+      data: {
+        [Model.modelName.toLocaleLowerCase()]: document,
+      },
+    });
+  });
 };
 
 export const updateOne = <T>(Model: Model<T>) => {
@@ -70,7 +66,7 @@ export const updateOne = <T>(Model: Model<T>) => {
       if (!updatedDocument) {
         const error = new CustomError(
           `${Model.modelName} with id ${id} is not found!`,
-          404
+          404,
         );
         return next(error);
       }
@@ -81,7 +77,7 @@ export const updateOne = <T>(Model: Model<T>) => {
           [Model.modelName.toLocaleLowerCase()]: updatedDocument,
         },
       });
-    }
+    },
   );
 };
 
@@ -94,7 +90,7 @@ export const deleteOne = <T>(Model: Model<T>) => {
       if (!deletedDocument) {
         const error = new CustomError(
           `${Model.modelName} with id ${id} is not found!`,
-          404
+          404,
         );
         return next(error);
       }
@@ -103,6 +99,6 @@ export const deleteOne = <T>(Model: Model<T>) => {
         status: 'success',
         data: null,
       });
-    }
+    },
   );
 };
