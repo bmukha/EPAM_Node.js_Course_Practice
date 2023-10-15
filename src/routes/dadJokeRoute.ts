@@ -13,18 +13,34 @@ const dadJokeRouter: Router = Router();
  *     tags: [Dad Joke]
  *     responses:
  *       200:
- *         description: A random dad joke.
+ *         description: Successful response.
  *         content:
- *           text/plain:
+ *           application/json:
  *             schema:
- *               type: string
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: The status of the response.
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     joke:
+ *                       type: string
+ *                       description: The retrieved dad joke.
  *       500:
  *         description: Internal Server Error.
  *         content:
  *           text/plain:
  *             schema:
- *               type: string
- *               example: Joke load failed
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: The status of the response.
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
  */
 
 dadJokeRouter.get('/', dadJokeController.getDadJoke);

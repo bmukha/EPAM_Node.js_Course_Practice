@@ -4,7 +4,7 @@ import { asyncErrorHandler } from '../utils/asyncErrorHandler.ts';
 export const getDadJoke = asyncErrorHandler(
   async (req: Request, res: Response) => {
     const response: globalThis.Response = await fetch(
-      'https://icanhazdadjoe.com/',
+      'https://icanhazdadjoke.com/',
       {
         headers: {
           Accept: 'application/json',
