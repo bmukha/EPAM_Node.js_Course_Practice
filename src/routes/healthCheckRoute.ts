@@ -12,22 +12,34 @@ const healthCheckRouter: Router = Router();
  *     description: Returns a JSON response indicating whether the service is running.
  *     responses:
  *       200:
- *         description: OK. The service is running.
+ *         description: Successful response.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 isRunning:
- *                   type: boolean
- *                   description: Indicates whether the service is running.
+ *                 status:
+ *                   type: string
+ *                   description: The status of the response.
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     serverIsRunning:
+ *                       type: boolean
+ *                       description: Running status confirmation.
  *       500:
  *         description: Internal Server Error.
  *         content:
- *           text/plain:
+ *            application/json:
  *             schema:
- *               type: string
- *               example: Internal Server Error
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: The status of the response.
+ *                 message:
+ *                   type: string
+ *                   description: Error message.
  *     tags:
  *       - Health Check
  */
