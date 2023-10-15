@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 import healthCheckRouter from './routes/healthCheckRoute.ts';
 import dadJokeRouter from './routes/dadJokeRoute.ts';
 import genresRouter from './routes/genresRoute.ts';
+import moviesRouter from './routes/moviesRoute.ts';
 import { CustomError } from './utils/CustomError.ts';
 import { globalErrorHandler } from './controllers/errorsController.ts';
 
@@ -35,20 +36,22 @@ const PORT = 3000;
 
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => res.send('Welcome to API!'));
-
 app.use('/api/v1/health-check', healthCheckRouter);
 
 app.use('/api/v1/dad-joke', dadJokeRouter);
 
 app.use('/api/v1/genres', genresRouter);
 
+app.use('/api/v1/movies', moviesRouter);
+
 app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+app.get('/', (req: Request, res: Response) => res.send('Welcome to API!'));
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
   const err = new CustomError(
     `Can't find ${req.originalUrl} on the server!`,
-    404
+    404,
   );
   next(err);
 });
@@ -64,6 +67,6 @@ try {
 
 app.listen(process.env.PORT || 3000, (): void =>
   console.log(
-    `Server listening on port ${PORT} in ${process.env.NODE_ENV} mode`
-  )
+    `Server listening on port ${PORT} in ${process.env.NODE_ENV} mode`,
+  ),
 );
