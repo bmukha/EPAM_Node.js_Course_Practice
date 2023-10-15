@@ -1,4 +1,13 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
+import { asyncErrorHandler } from '../utils/asyncErrorHandler.ts';
 
-export const getHealthCheck = (req: Request, res: Response) =>
-  res.json({ isRunning: true });
+export const getHealthCheck = asyncErrorHandler(
+  async (req: Request, res: Response) => {
+    res.json({
+      status: 'success',
+      data: {
+        serverIsRunning: true,
+      },
+    });
+  },
+);
