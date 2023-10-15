@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc, { Options } from 'swagger-jsdoc';
 import mongoose from 'mongoose';
@@ -8,6 +8,8 @@ import mongoose from 'mongoose';
 import healthCheckRouter from './routes/healthCheckRoute.ts';
 import dadJokeRouter from './routes/dadJokeRoute.ts';
 import genresRouter from './routes/genresRoute.ts';
+import { CustomError } from './utils/CustomError.ts';
+import { globalErrorHandler } from './controllers/errorsController.ts';
 
 const swaggerOptions: Options = {
   definition: {
@@ -43,13 +45,15 @@ app.use('/api/v1/genres', genresRouter);
 
 app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-app.use((req: Request, res: Response, next: NextFunction) =>
-  res.status(404).send('404 Not Found')
-);
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
+  const err = new CustomError(
+    `Can't find ${req.originalUrl} on the server!`,
+    404
+  );
+  next(err);
+});
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) =>
-  res.status(500).send('Internal Server Error')
-);
+app.use(globalErrorHandler);
 
 try {
   await mongoose.connect(process.env.DB_URL as string);

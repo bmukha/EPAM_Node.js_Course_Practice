@@ -22,11 +22,12 @@ export const getAll = <T>(Model: Model<T>) => {
 export const getOneById = <T>(Model: Model<T>) => {
   return asyncErrorHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-      const document = await Model.findById(req.params.id);
+      const { id } = req.params;
+      const document = await Model.findById(id);
 
       if (!document) {
         const error = new CustomError(
-          `${Model.modelName} with that ID is not found!`,
+          `${Model.modelName} with id ${id} is not found!`,
           404
         );
         return next(error);
@@ -60,15 +61,15 @@ export const createOne = <T>(Model: Model<T>) => {
 export const updateOne = <T>(Model: Model<T>) => {
   return asyncErrorHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-      const updatedDocument = await Model.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true, runValidators: true }
-      );
+      const { id } = req.params;
+      const updatedDocument = await Model.findByIdAndUpdate(id, req.body, {
+        new: true,
+        runValidators: true,
+      });
 
       if (!updatedDocument) {
         const error = new CustomError(
-          `${Model.modelName} with that ID is not found!`,
+          `${Model.modelName} with id ${id} is not found!`,
           404
         );
         return next(error);
@@ -87,11 +88,12 @@ export const updateOne = <T>(Model: Model<T>) => {
 export const deleteOne = <T>(Model: Model<T>) => {
   return asyncErrorHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-      const deletedDocument = await Model.findByIdAndDelete(req.params.id);
+      const { id } = req.params;
+      const deletedDocument = await Model.findByIdAndDelete(id);
 
       if (!deletedDocument) {
         const error = new CustomError(
-          `${Model.modelName} with that ID is not found!`,
+          `${Model.modelName} with id ${id} is not found!`,
           404
         );
         return next(error);
