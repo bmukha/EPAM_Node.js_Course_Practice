@@ -17,7 +17,6 @@ export const deleteMovie = handlerFactory.deleteOne(MovieModel);
 
 export const getMoviesByGenre = asyncErrorHandler(async (req, res, next) => {
   const { genreName } = req.params;
-  console.log('genre is', genreName);
 
   const genre = await GenreModel.findOne({ name: genreName }).exec();
 

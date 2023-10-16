@@ -10,6 +10,7 @@ const healthCheckRouter: Router = Router();
  *   get:
  *     summary: Check the health of the service.
  *     description: Returns a JSON response indicating whether the service is running.
+ *     tags: [Health Check]
  *     responses:
  *       200:
  *         description: Successful response.
@@ -40,8 +41,6 @@ const healthCheckRouter: Router = Router();
  *                 message:
  *                   type: string
  *                   description: Error message.
- *     tags:
- *       - Health Check
  */
 
 healthCheckRouter.get('/', healthCheckController.getHealthCheck);
