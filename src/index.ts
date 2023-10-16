@@ -1,15 +1,20 @@
 import dotenv from 'dotenv';
 dotenv.config();
+
 import express, { Request, Response, NextFunction } from 'express';
+
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc, { Options } from 'swagger-jsdoc';
+
 import mongoose from 'mongoose';
 
 import healthCheckRouter from './routes/healthCheckRoute.ts';
 import dadJokeRouter from './routes/dadJokeRoute.ts';
 import genresRouter from './routes/genresRoute.ts';
 import moviesRouter from './routes/moviesRoute.ts';
+
 import { CustomError } from './utils/CustomError.ts';
+
 import { globalErrorHandler } from './controllers/errorsController.ts';
 
 const swaggerOptions: Options = {

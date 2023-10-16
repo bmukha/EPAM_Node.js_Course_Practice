@@ -1,4 +1,5 @@
 import { type Request, type Response } from 'express';
+
 import { asyncErrorHandler } from '../utils/asyncErrorHandler.ts';
 
 export const getHealthCheck = asyncErrorHandler(

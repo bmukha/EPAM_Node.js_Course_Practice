@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import * as dadJokeController from '../controllers/dadJokeController.js';
+import * as dadJokeController from '../controllers/dadJokeController.ts';
 
 const dadJokeRouter: Router = Router();
 

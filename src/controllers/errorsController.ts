@@ -1,8 +1,8 @@
-import { CustomError } from '../utils/CustomError.ts';
-
 import { Request, Response, NextFunction } from 'express';
 import { Error } from 'mongoose';
 import { MongoServerError } from 'mongodb';
+
+import { CustomError } from '../utils/CustomError.ts';
 
 export const globalErrorHandler = (
   error: unknown,

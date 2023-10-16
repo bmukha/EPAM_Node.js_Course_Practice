@@ -1,5 +1,7 @@
-import { Model } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
+
+import { Model } from 'mongoose';
+
 import { asyncErrorHandler } from './asyncErrorHandler.ts';
 import { CustomError } from './CustomError.ts';
 
