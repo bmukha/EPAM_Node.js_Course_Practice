@@ -15,7 +15,7 @@ import moviesRouter from './routes/moviesRoute.ts';
 
 import { CustomError } from './utils/CustomError.ts';
 
-import { globalErrorHandler } from './controllers/errorsController.ts';
+import { globalErrorHandler } from './utils/errorsHandler.ts';
 
 const swaggerOptions: Options = {
   definition: {
