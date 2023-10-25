@@ -10,6 +10,7 @@
     "strict": true,
     "baseUrl": "./",
     "allowImportingTsExtensions": true,
+    "noImplicitAny": true,
     "noEmit": true,
     "paths": {
       "@controllers": ["src/controllers/index.js"],
