@@ -37,7 +37,6 @@ const swaggerOptions: Options = {
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 const app = express();
-const PORT = 3000;
 
 app.use(express.json());
 
@@ -63,17 +62,15 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 
 app.use(globalErrorHandler);
 
-try {
-  await mongoose.connect(process.env.DB_URL as string, {
-    autoIndex: true,
-  });
-  console.log('DB connection successful!');
-} catch (error) {
-  console.error('DB connection failed!');
+if (process.env.NODE_ENV !== 'test') {
+  try {
+    await mongoose.connect(process.env.DB_URL as string, {
+      autoIndex: true,
+    });
+    console.log('DB connection successful!');
+  } catch (error) {
+    console.error('DB connection failed!', error);
+  }
 }
 
-app.listen(process.env.PORT || 3000, (): void =>
-  console.log(
-    `Server listening on port ${PORT} in ${process.env.NODE_ENV} mode`,
-  ),
-);
+export default app;
