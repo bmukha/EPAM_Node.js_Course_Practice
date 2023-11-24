@@ -5,9 +5,7 @@ import express, { Request, Response, NextFunction } from 'express';
 
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsDoc, { Options } from 'swagger-jsdoc';
-
-import mongoose from 'mongoose';
-
+import { connectToDB } from './db/db.ts';
 import healthCheckRouter from './routes/healthCheckRoute.ts';
 import dadJokeRouter from './routes/dadJokeRoute.ts';
 import genresRouter from './routes/genresRoute.ts';
@@ -62,11 +60,8 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 
 app.use(globalErrorHandler);
 
-mongoose
-  .connect(process.env.DB_URL as string, {
-    autoIndex: true,
-  })
-  // .then(() => console.log('DB connection successful!'))
-  .catch((error) => console.error('DB connection failed!', error));
+if (process.env.NODE_ENV !== 'test') {
+  (async () => await connectToDB(process.env.DB_URL as string))();
+}
 
 export default app;
