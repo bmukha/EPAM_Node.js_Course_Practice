@@ -62,15 +62,11 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 
 app.use(globalErrorHandler);
 
-if (process.env.NODE_ENV !== 'test') {
-  try {
-    await mongoose.connect(process.env.DB_URL as string, {
-      autoIndex: true,
-    });
-    console.log('DB connection successful!');
-  } catch (error) {
-    console.error('DB connection failed!', error);
-  }
-}
+mongoose
+  .connect(process.env.DB_URL as string, {
+    autoIndex: true,
+  })
+  // .then(() => console.log('DB connection successful!'))
+  .catch((error) => console.error('DB connection failed!', error));
 
 export default app;
