@@ -2,7 +2,7 @@ import request from 'supertest';
 import { server } from '../server.ts';
 
 describe('Health Check Endpoint', () => {
-  afterAll(() => server.close());
+  afterAll(async () => await server.close());
   it(`should return status: "success" and serverIsRunning: true`, async () => {
     const response = await request(server).get('/api/v1/health-check');
 
