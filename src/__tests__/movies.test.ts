@@ -13,24 +13,30 @@ beforeAll(async () => {
   await connectToDB(process.env.TEST_DB_URL as string);
 });
 
+const getGenresIdsByNames = async (genresArray: string[]) => {
+  return await Promise.all(
+    genresArray.map(async (genreName: string) => {
+      const result = await GenreModel.find({ name: genreName });
+      return result[0]['_id'];
+    }),
+  );
+};
+
+const getMoviesWithGenreIds = async () => {
+  return await Promise.all(
+    movies.map(async (movie) => {
+      const { genre } = movie;
+      const genreIds = await getGenresIdsByNames(genre);
+      return { ...movie, genre: genreIds };
+    }),
+  );
+};
+
 beforeEach(async () => {
   await clearDB();
   await GenreModel.create(genres);
 
-  const moviesWithGenreIds = await Promise.all(
-    movies.map(async (movie) => {
-      const { genre } = movie;
-      const genreIds = await Promise.all(
-        genre.map(async (genreName: string) => {
-          const result = await GenreModel.find({ name: genreName });
-          return result[0]['_id'];
-        }),
-      );
-      return { ...movie, genre: genreIds };
-    }),
-  );
-
-  await MovieModel.create(moviesWithGenreIds);
+  await MovieModel.create(await getMoviesWithGenreIds());
 
   const response = await request(server).get('/api/v1/movies');
   firstMovie = response.body.data.movies[0];
@@ -58,42 +64,55 @@ describe('Movies Endpoint', () => {
     });
   });
 
-  //   describe('POST Request', () => {
-  //     it(`should return status: "success", code 201 and created genre`, async () => {
-  //       const response = await request(server).post('/api/v1/genres').send({
-  //         name: 'cartoon',
-  //       });
+  describe('POST Request', () => {
+    it(`should return status: "success", code 201 and created movie`, async () => {
+      const response = await request(server)
+        .post('/api/v1/movies')
+        .send({
+          title: 'Once upon a time in America',
+          description: 'Gangster movie',
+          release_date: '2001-12-09T00:00:00.000Z',
+          genre: await getGenresIdsByNames(['drama']),
+        });
 
-  //       expect(response.status).toBe(201);
-  //       expect(response.body.status).toBe('success');
-  //       expect(response.body.data.genre.name).toBe('cartoon');
-  //     });
+      expect(response.status).toBe(201);
+      expect(response.body.status).toBe('success');
+      expect(response.body.data.movie.title).toBe(
+        'Once upon a time in America',
+      );
+    });
 
-  //     it(`should return status: "fail", code 400 and error message if genre already exists`, async () => {
-  //       const response = await request(server).post('/api/v1/genres').send({
-  //         name: 'drama',
-  //       });
+    it(`should return status: "fail", code 400 and error message if movie already exists`, async () => {
+      const response = await request(server)
+        .post('/api/v1/movies')
+        .send(firstMovie);
 
-  //       expect(response.status).toBe(400);
-  //       expect(response.body).toMatchObject({
-  //         status: 'fail',
-  //         message: expect.stringMatching('duplicate key error'),
-  //       });
-  //     });
+      expect(response.status).toBe(400);
+      expect(response.body).toMatchObject({
+        status: 'fail',
+        message: expect.stringMatching('duplicate key error'),
+      });
+    });
 
-  //     it(`should return status: "fail", code 400 and error message if name is not provided`, async () => {
-  //       const response = await request(server).post('/api/v1/genres').send();
+    it(`should return status: "fail", code 400 and error message if name is not provided`, async () => {
+      const response = await request(server)
+        .post('/api/v1/movies')
+        .send({
+          description: 'Gangster movie',
+          release_date: '2001-12-09T00:00:00.000Z',
+          genre: await getGenresIdsByNames(['drama']),
+        });
 
-  //       expect(response.status).toBe(400);
-  //       expect(response.body).toMatchObject({
-  //         status: 'fail',
-  //         message: expect.stringMatching(
-  //           'Genre validation failed: name: Name is required!',
-  //         ),
-  //       });
-  //     });
-  //   });
-  // });
+      expect(response.status).toBe(400);
+      expect(response.body).toMatchObject({
+        status: 'fail',
+        message: expect.stringMatching(
+          'Movie validation failed: title: Title is required!',
+        ),
+      });
+    });
+  });
+
   // describe('Single genre endpoint', () => {
   //   describe('GET request', () => {
   //     it('should return status: "success" and genre if valid id is provided', async () => {
