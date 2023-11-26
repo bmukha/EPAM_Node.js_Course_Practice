@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import request from 'supertest';
 import server from '../server.ts';
 import { connectToDB, disconnectFromDB, clearDB } from '../db/db.ts';
