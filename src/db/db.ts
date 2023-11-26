@@ -15,5 +15,5 @@ export const disconnectFromDB = async () => await mongoose.disconnect();
 
 export const clearDB = async () => {
   const collections = await mongoose.connection.db.collections();
-  collections.forEach(async (collection) => await collection.deleteMany({}));
+  collections.forEach(async (collection) => await collection.drop());
 };

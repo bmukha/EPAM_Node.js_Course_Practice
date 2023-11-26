@@ -9,9 +9,6 @@ let id: string;
 
 beforeAll(async () => {
   await connectToDB(process.env.TEST_DB_URL as string);
-});
-
-beforeEach(async () => {
   await clearDB();
   await GenreModel.create(genres);
   const response = await request(server).get('/api/v1/genres');
@@ -52,9 +49,9 @@ describe('Genres Endpoint', () => {
     });
 
     it(`should return status: "fail", code 400 and error message if genre already exists`, async () => {
-      const response = await request(server).post('/api/v1/genres').send({
-        name: 'drama',
-      });
+      const response = await request(server)
+        .post('/api/v1/genres')
+        .send(firstGenre);
 
       expect(response.status).toBe(400);
       expect(response.body).toMatchObject({

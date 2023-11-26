@@ -11,6 +11,14 @@ let id: string;
 
 beforeAll(async () => {
   await connectToDB(process.env.TEST_DB_URL as string);
+  await clearDB();
+  await GenreModel.create(genres);
+
+  await MovieModel.create(await getMoviesWithGenreIds());
+
+  const response = await request(server).get('/api/v1/movies');
+  firstMovie = response.body.data.movies[0];
+  id = firstMovie['_id'];
 });
 
 const getGenresIdsByNames = async (genresArray: string[]) => {
@@ -31,17 +39,6 @@ const getMoviesWithGenreIds = async () => {
     }),
   );
 };
-
-beforeEach(async () => {
-  await clearDB();
-  await GenreModel.create(genres);
-
-  await MovieModel.create(await getMoviesWithGenreIds());
-
-  const response = await request(server).get('/api/v1/movies');
-  firstMovie = response.body.data.movies[0];
-  id = firstMovie['_id'];
-});
 
 afterAll(async () => {
   await disconnectFromDB();
@@ -113,7 +110,7 @@ describe('Movies Endpoint', () => {
     });
   });
 
-  describe('Single genre endpoint', () => {
+  describe('Single movie endpoint', () => {
     describe('GET request', () => {
       it('should return status: "success" and movie if valid id is provided', async () => {
         const response = await request(server).get(`/api/v1/movies/${id}`);
@@ -160,20 +157,43 @@ describe('Movies Endpoint', () => {
         });
       });
     });
-    //   describe('DELETE request', () => {
-    //     it('should return status: "success" and null if valid id is provided', async () => {
-    //       const response = await request(server).delete(`/api/v1/genres/${id}`);
-    //       expect(response.status).toBe(204);
-    //       expect(response.body).toMatchObject({});
-    //     });
-    //     it('should return status: "fail", code 404 and error message if invalid id is provided', async () => {
-    //       const id = '612d6b59e34dea61d8983e1e';
-    //       const response = await request(server).delete(`/api/v1/genres/${id}`);
-    //       expect(response.status).toBe(404);
-    //       expect(response.body).toMatchObject({
-    //         status: 'fail',
-    //         message: `Genre with id ${id} is not found!`,
-    //       });
-    //     });
+    describe('DELETE request', () => {
+      it('should return status: "success" and null if valid id is provided', async () => {
+        const response = await request(server).delete(`/api/v1/movies/${id}`);
+        expect(response.status).toBe(204);
+        expect(response.body).toMatchObject({});
+      });
+      it('should return status: "fail", code 404 and error message if invalid id is provided', async () => {
+        const id = '612d6b59e34dea61d8983e1e';
+        const response = await request(server).delete(`/api/v1/movies/${id}`);
+        expect(response.status).toBe(404);
+        expect(response.body).toMatchObject({
+          status: 'fail',
+          message: `Movie with id ${id} is not found!`,
+        });
+      });
+    });
+  });
+
+  describe('Movies by genre endpoint', () => {
+    describe('GET request', () => {
+      it('should return status: "success" and movies if valid genre name is provided', async () => {
+        const response = await request(server).get(
+          '/api/v1/movies/genre/action',
+        );
+        expect(response.status).toBe(200);
+        expect(response.body.status).toBe('success');
+        expect(response.body.data.movies.length).toBe(2);
+      });
+
+      it('should return status: "fail", code 404 and error message if invalid genre name is provided', async () => {
+        const response = await request(server).get('/api/v1/movies/genre/news');
+        expect(response.status).toBe(404);
+        expect(response.body).toMatchObject({
+          status: 'fail',
+          message: `Genre 'news' not found.`,
+        });
+      });
+    });
   });
 });
